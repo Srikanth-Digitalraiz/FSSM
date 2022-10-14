@@ -220,7 +220,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "${snapshot.data![index]['sludgeQuantityRecieved']}",
+                                        "${snapshot.data![index]['sludgeQuantityRecieved']} Tons",
                                         style: TextStyle(
                                           color: black,
                                           fontFamily: 'PopM',
@@ -246,7 +246,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "${snapshot.data![index]['avgCapacity']}",
+                                        "${snapshot.data![index]['avgCapacity']} Tons",
                                         style: TextStyle(
                                           color: black,
                                           fontFamily: 'PopM',
@@ -301,7 +301,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "${snapshot.data![index]['operatorWithPpe']}",
+                                        snapshot.data![index]
+                                                    ['operatorWithPpe'] ==
+                                                true
+                                            ? "Yes"
+                                            : snapshot.data![index]
+                                                        ['operatorWithPpe'] ==
+                                                    false
+                                                ? "No"
+                                                : "",
                                         style: TextStyle(
                                           color: black,
                                           fontFamily: 'PopM',

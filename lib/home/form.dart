@@ -190,8 +190,10 @@ class _FSSMFormState extends State<FSSMForm> {
                             fontSize: 15,
                           ),
                           controller: _vehicleNumberCon,
+                          maxLength: 13,
                           decoration: InputDecoration(
                             hintText: 'TS56YU7878',
+                            counterText: "",
                             label: const Text("Vehicle Number"),
                             labelStyle: TextStyle(
                               fontFamily: 'MonS',
@@ -214,6 +216,9 @@ class _FSSMFormState extends State<FSSMForm> {
                           validator: (val) {
                             if (val == null || val.isEmpty) {
                               return 'Vehicle Number is required';
+                            }
+                            if (val.length < 8) {
+                              return 'Please Enter valid vehicle number';
                             }
                           },
                         ),
