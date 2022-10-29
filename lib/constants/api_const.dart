@@ -2,6 +2,14 @@
 
 const String baseURL = "http://103.171.181.73:3001/api/app";
 
+//Get Dist List
+
+const String disLis = "$baseURL/fssm/ulb-getdistrictlist";
+
+//Get Dist ULB List
+
+const String disUlbList = "$baseURL/fssm/ulb-getulblist";
+
 //Login
 
 const String login = "$baseURL/fssm/ulb-userlogin";

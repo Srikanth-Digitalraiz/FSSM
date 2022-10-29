@@ -43,18 +43,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _userData() async {
     SharedPreferences _data = await SharedPreferences.getInstance();
-    String? na = _data.getString('personname');
-    String? em = _data.getString('personemail');
-    String? id = _data.getString('personid');
+
     String? to = _data.getString('maintoken');
-    String? ulI = _data.getString('personulbnid');
+    String? uld = _data.getString('uldID');
 
     setState(() {
-      userName = na!;
-      userEmail = em!;
-      userId = id!;
       userToken = to!;
-      userUldId = ulI!;
+      userUldId = uld!;
     });
   }
 
