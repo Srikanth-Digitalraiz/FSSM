@@ -220,33 +220,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "${snapshot.data![index]['sludgeQuantityRecieved']} Tons",
-                                        style: TextStyle(
-                                          color: black,
-                                          fontFamily: 'PopM',
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 2,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Average Capacity: ",
-                                        style: TextStyle(
-                                          color: black,
-                                          fontFamily: 'PopR',
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${snapshot.data![index]['avgCapacity']} Tons",
+                                        "${snapshot.data![index]['sludgeQuantityRecieved']} Liters",
                                         style: TextStyle(
                                           color: black,
                                           fontFamily: 'PopM',

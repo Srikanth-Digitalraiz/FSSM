@@ -92,7 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
       _getData.setString("ulbName", _ulbName);
 
       setState(() {
+        userToken = _token;
         userUldId = _ulbID;
+        distsID = _distID;
+        distNAME = _distName;
+        uldID = _ulbID;
+        uldNAME = _ulbName;
       });
 
       Navigator.pushReplacement(

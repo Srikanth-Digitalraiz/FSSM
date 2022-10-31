@@ -28,52 +28,24 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     _userData();
-    userProfile();
     vehAndSlucount(context);
   }
 
   void _userData() async {
     SharedPreferences _data = await SharedPreferences.getInstance();
-    String? na = _data.getString('personname');
-    String? em = _data.getString('personemail');
-    String? id = _data.getString('personid');
     String? to = _data.getString('maintoken');
-    String? ulI = _data.getString('personulbnid');
+    String? uld = _data.getString('uldID');
+    String? ulbName = _data.getString('ulbName');
+    String? distname = _data.getString('distName');
+    String? distID = _data.getString('distID');
 
     setState(() {
-      userName = na!;
-      userEmail = em!;
-      userId = id!;
       userToken = to!;
-      userUldId = ulI!;
+      userUldId = uld!;
+      uldNAME = ulbName!;
+      distNAME = distname!;
+      distsID = distID!;
     });
-  }
-
-  Future userProfile() async {
-    var headers = {
-      'Authorization': 'Bearer $userToken',
-      'Content-Type': 'application/json'
-    };
-    var request = http.Request('POST', Uri.parse(profile));
-    request.body = json.encode({"_id": userId});
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      var responseString = await response.stream.bytesToString();
-      final decodedMap = json.decode(responseString);
-      String _name = decodedMap['userResult']['name'].toString();
-      String _email = decodedMap['userResult']['email'].toString();
-
-      setState(() {
-        name = _name;
-        email = _email;
-      });
-      return decodedMap['userResult'];
-    } else {
-      print(response.reasonPhrase);
-    }
   }
 
   //Vehicle Count
@@ -218,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 10,
               ),
               Text(
-                "FSSM Dashboard",
+                "FSSM Tracker",
                 style: TextStyle(
                   color: white,
                   fontFamily: 'PopM',
@@ -312,13 +284,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 3),
-                  Text(
-                    Jiffy(dt).yMMMMd,
-                    style: const TextStyle(
-                      fontFamily: 'PopM',
-                      fontSize: 12,
-                      color: Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          Jiffy(dt).yMMMMd,
+                          style: const TextStyle(
+                            fontFamily: 'PopM',
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          uldNAME,
+                          style: const TextStyle(
+                            fontFamily: 'PopM',
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Divider(),
                   SizedBox(height: MediaQuery.of(context).size.height / 3),
@@ -415,13 +404,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 3),
-                  Text(
-                    Jiffy(dt).yMMMMd,
-                    style: const TextStyle(
-                      fontFamily: 'PopM',
-                      fontSize: 12,
-                      color: Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          Jiffy(dt).yMMMMd,
+                          style: const TextStyle(
+                            fontFamily: 'PopM',
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        uldNAME,
+                        style: const TextStyle(
+                          fontFamily: 'PopM',
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   Divider(),
                   SizedBox(height: MediaQuery.of(context).size.height / 3),
@@ -454,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 28.0),
                         child: Text(
-                          "Tons",
+                          "Liters",
                           style: TextStyle(
                             color: black,
                             fontFamily: 'PopR',
@@ -520,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _profileSection(context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 1.5,
+      height: MediaQuery.of(context).size.height / 2.5,
       decoration: BoxDecoration(
         color: white,
         borderRadius: BorderRadius.vertical(
@@ -570,288 +573,124 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 10,
           ),
           Expanded(
-            child: FutureBuilder(
-              future: userProfile(),
-              builder: (context, AsyncSnapshot snap) {
-                if (!snap.hasData) {
-                  return Center(
-                    child: Container(
-                        height: 3,
-                        width: MediaQuery.of(context).size.width / 3,
-                        child: LinearProgressIndicator(
-                          color: primaryColor,
-                          backgroundColor: secondColor.withOpacity(0.3),
-                        )),
-                  );
-                }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(70),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
-                              ),
-                              fit: BoxFit.cover),
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(70),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
                         ),
-                      ),
+                        fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, 1),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                      height: 60,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(0, 1),
-                          ),
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(1, 0),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Name: ",
-                              style: const TextStyle(
-                                fontFamily: 'PopB',
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              snap.data['name'].toString(),
-                              style: const TextStyle(
-                                fontFamily: 'PopM',
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 11, left: 10, right: 10),
-                      height: 60,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(0, 1),
-                          ),
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(1, 0),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Email: ",
-                              style: const TextStyle(
-                                fontFamily: 'PopB',
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              snap.data['email'].toString(),
-                              style: const TextStyle(
-                                fontFamily: 'PopM',
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 11, left: 10, right: 10),
-                      height: 60,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(0, 1),
-                          ),
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(1, 0),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Role: ",
-                              style: const TextStyle(
-                                fontFamily: 'PopB',
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              snap.data['role'].toString().toUpperCase(),
-                              style: const TextStyle(
-                                fontFamily: 'PopM',
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 11, left: 10, right: 10),
-                      height: 60,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(0, 1),
-                          ),
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(1, 0),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "District Name: ",
-                              style: const TextStyle(
-                                fontFamily: 'PopB',
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              snap.data['district_name'].toString(),
-                              style: const TextStyle(
-                                fontFamily: 'PopM',
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 11, left: 10, right: 10),
-                      height: 60,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(0, 1),
-                          ),
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(1, 0),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "ULB Name: ",
-                              style: const TextStyle(
-                                fontFamily: 'PopB',
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              snap.data['ulb_name'].toString(),
-                              style: const TextStyle(
-                                fontFamily: 'PopM',
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(1, 0),
                     ),
                   ],
-                );
-              },
-            ),
-          )
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "ULB Name: ",
+                        style: const TextStyle(
+                          fontFamily: 'PopB',
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        uldNAME,
+                        style: const TextStyle(
+                          fontFamily: 'PopM',
+                          fontSize: 15,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 11, left: 10, right: 10),
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, 1),
+                    ),
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(1, 0),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "District Name: ",
+                        style: const TextStyle(
+                          fontFamily: 'PopB',
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        distNAME,
+                        style: const TextStyle(
+                          fontFamily: 'PopM',
+                          fontSize: 15,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ))
         ],
       ),
     );
@@ -859,7 +698,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _menu(context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 1.8,
+      height: MediaQuery.of(context).size.height / 2.1,
       decoration: BoxDecoration(
         color: white,
         borderRadius: BorderRadius.vertical(
@@ -911,7 +750,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        name,
+                        uldNAME,
                         style: const TextStyle(
                           fontFamily: 'PopB',
                           fontSize: 15,
@@ -922,7 +761,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 3,
                       ),
                       Text(
-                        email,
+                        distNAME,
                         style: const TextStyle(
                           fontFamily: 'PopM',
                           fontSize: 13,
@@ -1044,29 +883,29 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          ListTile(
-            leading: Icon(
-              Icons.change_circle,
-              color: black,
-            ),
-            title: Text(
-              "Change Password",
-              style: const TextStyle(
-                fontFamily: 'PopM',
-                fontSize: 15,
-                color: Colors.black,
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => ChangePassword(),
-                ),
-              );
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(
+          //     Icons.change_circle,
+          //     color: black,
+          //   ),
+          //   title: Text(
+          //     "Change Password",
+          //     style: const TextStyle(
+          //       fontFamily: 'PopM',
+          //       fontSize: 15,
+          //       color: Colors.black,
+          //     ),
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(
+          //       context,
+          //       CupertinoPageRoute(
+          //         builder: (context) => ChangePassword(),
+          //       ),
+          //     );
+          //   },
+          // ),
           ListTile(
             leading: Icon(
               Icons.logout,

@@ -12,23 +12,27 @@ import '../constants/api_const.dart';
 import '../constants/color_const.dart';
 
 //Add Operation repo
-Future userAddOps(String sludgeRe, String avgCa, String sourceSl, String vehNum,
-    String opBool, context) async {
+Future userAddOps(String sludgeRe, String sourceSl, String vehNum,
+    String opBool, String opName, String opAdd, String houSize, context) async {
   SharedPreferences _sharedData = await SharedPreferences.getInstance();
   var headers = {'Authorization': 'Bearer $userToken'};
   var request = http.MultipartRequest('POST', Uri.parse(addops));
   request.fields.addAll({
     'ulbId': userUldId,
     'sludgeQuantityRecieved': sludgeRe,
-    'avgCapacity': avgCa,
     'sourceOfSludge': sourceSl,
     'vehicleNumber': vehNum,
-    'operatorWithPpe': opBool
+    'operatorWithPpe': opBool,
+    'operatorName': opName,
+    'address': opAdd,
+    'noOfHouseUsers': houSize
   });
 
   request.headers.addAll(headers);
 
   http.StreamedResponse response = await request.send();
+
+  print("Form Status Code:========>" + response.statusCode.toString());
 
   if (response.statusCode == 200) {
     Navigator.pushReplacement(

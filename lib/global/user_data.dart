@@ -1,6 +1,7 @@
-String userId = "";
-String userName = "";
-String userEmail = "";
+String distsID = "";
+String distNAME = "";
+String uldID = "";
+String uldNAME = "";
 String userToken = "";
 
 String userUldId = "";

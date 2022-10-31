@@ -46,10 +46,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
     String? to = _data.getString('maintoken');
     String? uld = _data.getString('uldID');
+    String? ulbName = _data.getString('ulbName');
+    String? distname = _data.getString('distName');
+    String? distID = _data.getString('distID');
 
     setState(() {
       userToken = to!;
       userUldId = uld!;
+      uldNAME = ulbName!;
+      distNAME = distname!;
+      distsID = distID!;
     });
   }
 

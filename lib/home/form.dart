@@ -38,8 +38,8 @@ class _FSSMFormState extends State<FSSMForm> {
     "Residential- Slum",
     "Residential- House",
     "Residential- Apartment",
-    "Public Toilets"
-        "Community toilets",
+    "Public Toilets",
+    "Community Toilets",
     "Commercial- Hotels",
     "Commercial- Bus stand/ Railway station",
     "Industrial- Domestic sewage",
@@ -50,6 +50,9 @@ class _FSSMFormState extends State<FSSMForm> {
   var dt = DateTime.now();
   final TextEditingController _vehicleNumberCon = TextEditingController();
   final TextEditingController _quantitySludgeCon = TextEditingController();
+  final TextEditingController _operatorName = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _numberOfPeople = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,7 +160,7 @@ class _FSSMFormState extends State<FSSMForm> {
                           child: Row(
                             children: [
                               Text(
-                                "Operator Name: ",
+                                "City: ",
                                 style: const TextStyle(
                                   fontFamily: 'PopB',
                                   fontSize: 14,
@@ -168,7 +171,7 @@ class _FSSMFormState extends State<FSSMForm> {
                                 width: 10,
                               ),
                               Text(
-                                userName,
+                                uldNAME,
                                 style: const TextStyle(
                                   fontFamily: 'PopM',
                                   fontSize: 15,
@@ -177,6 +180,45 @@ class _FSSMFormState extends State<FSSMForm> {
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: TextFormField(
+                          style: TextStyle(
+                            fontFamily: 'PopM',
+                            fontSize: 15,
+                          ),
+                          controller: _operatorName,
+                          decoration: InputDecoration(
+                            hintText: 'eg: Shyam',
+                            label: const Text("Operator name"),
+                            labelStyle: TextStyle(
+                              fontFamily: 'MonS',
+                              fontSize: 13,
+                              color: primaryColor,
+                            ),
+                            suffixIcon: Icon(
+                              Icons.person_outline_outlined,
+                              color: primaryColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(color: Colors.teal),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return 'Sludge recieved is required';
+                            }
+                          },
                         ),
                       ),
                       SizedBox(
@@ -236,7 +278,7 @@ class _FSSMFormState extends State<FSSMForm> {
                           keyboardType: TextInputType.number,
                           controller: _quantitySludgeCon,
                           decoration: InputDecoration(
-                            hintText: '480 Tons',
+                            hintText: '480 Liters',
                             label: const Text("Quantity of sludge recieved"),
                             labelStyle: TextStyle(
                               fontFamily: 'MonS',
@@ -351,64 +393,83 @@ class _FSSMFormState extends State<FSSMForm> {
                         ],
                       ),
                       SizedBox(
-                        height: 6,
+                        height: 15,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Average Capacity: ",
-                              style: const TextStyle(
-                                fontFamily: 'PopB',
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: TextFormField(
+                          style: TextStyle(
+                            fontFamily: 'PopM',
+                            fontSize: 15,
+                          ),
+                          controller: _addressController,
+                          decoration: InputDecoration(
+                            hintText: 'Charminar',
+                            label: const Text("Address"),
+                            labelStyle: TextStyle(
+                              fontFamily: 'MonS',
+                              fontSize: 13,
+                              color: primaryColor,
+                            ),
+                            suffixIcon: Icon(
+                              Icons.location_on_outlined,
+                              color: primaryColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(color: Colors.teal),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(color: primaryColor),
                             ),
                           ),
-                          SizedBox(
-                            width: 10,
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return 'Address is required';
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: TextFormField(
+                          style: TextStyle(
+                            fontFamily: 'PopM',
+                            fontSize: 15,
                           ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 3.0),
-                            child: Center(
-                              child: GroupButton(
-                                options: GroupButtonOptions(
-                                  spacing: 7.0,
-                                  runSpacing: 0.3,
-                                  selectedColor: primaryColor,
-                                  selectedTextStyle: TextStyle(
-                                      color: white,
-                                      fontFamily: 'PopM',
-                                      fontWeight: FontWeight.w600),
-                                  unselectedTextStyle: TextStyle(
-                                      color: black,
-                                      fontFamily: 'PopR',
-                                      fontWeight: FontWeight.w200),
-                                  borderRadius: BorderRadius.circular(8),
-                                  unselectedColor:
-                                      Colors.blueGrey.shade200.withOpacity(0.4),
-                                ),
-                                isRadio: true,
-                                onSelected: (index, isSelected, _) {
-                                  setState(() {
-                                    typeSelected = true;
-                                    selectedType = '$isSelected';
-                                  });
-                                  print(index.toString() + 'is selected');
-                                },
-                                buttons: [
-                                  "5 Tons",
-                                  "10 Tons",
-                                  "15 Tons",
-                                  "20 Tons",
-                                ],
-                              ),
+                          keyboardType: TextInputType.number,
+                          controller: _numberOfPeople,
+                          decoration: InputDecoration(
+                            hintText: '10 or 12',
+                            label: const Text("Household size/no.of users"),
+                            labelStyle: TextStyle(
+                              fontFamily: 'MonS',
+                              fontSize: 13,
+                              color: primaryColor,
+                            ),
+                            suffixIcon: Icon(
+                              Icons.people_alt_outlined,
+                              color: primaryColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(color: Colors.teal),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(color: primaryColor),
                             ),
                           ),
-                        ],
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return 'House hold size is required';
+                            }
+                          },
+                        ),
                       ),
                       SizedBox(
                         height: 6,
@@ -482,6 +543,9 @@ class _FSSMFormState extends State<FSSMForm> {
                             onPressed: () async {
                               String sludRe = _quantitySludgeCon.text;
                               String vehNu = _vehicleNumberCon.text;
+                              String opNames = _operatorName.text;
+                              String addres = _addressController.text;
+                              String housSize = _numberOfPeople.text;
 
                               String sourceSp = dropdownvalue ==
                                       "Residential- Slum"
@@ -491,7 +555,7 @@ class _FSSMFormState extends State<FSSMForm> {
                                       : dropdownvalue ==
                                               "Residential- Apartment"
                                           ? "ResidentialApartment"
-                                          : dropdownvalue == "Community toilets"
+                                          : dropdownvalue == "Community Toilets"
                                               ? "CommunityToilets"
                                               : dropdownvalue ==
                                                       "Public Toilets"
@@ -513,16 +577,6 @@ class _FSSMFormState extends State<FSSMForm> {
                                                                       ? "InstitutionalSchoolCollegeHostel"
                                                                       : "";
 
-                              String avgC = selectedType == "0"
-                                  ? "5"
-                                  : selectedType == "1"
-                                      ? "10"
-                                      : selectedType == "2"
-                                          ? "15"
-                                          : selectedType == "3"
-                                              ? "20"
-                                              : "";
-
                               String deslu =
                                   selectedTypes == "0" ? "true" : "false";
 
@@ -530,9 +584,6 @@ class _FSSMFormState extends State<FSSMForm> {
                                 if (dropdownvalue == "Select Source Septage") {
                                   Fluttertoast.showToast(
                                       msg: "Please Select source of septage");
-                                } else if (selectedType == "") {
-                                  Fluttertoast.showToast(
-                                      msg: "Please Select average capacity");
                                 } else if (selectedTypes == "") {
                                   Fluttertoast.showToast(
                                       msg:
@@ -540,8 +591,15 @@ class _FSSMFormState extends State<FSSMForm> {
                                 } else {
                                   showLoaderDialog(context,
                                       "Submitting...Please wait..!", 40);
-                                  await userAddOps(sludRe, avgC, sourceSp,
-                                      vehNu, deslu, context);
+                                  await userAddOps(
+                                      sludRe,
+                                      sourceSp,
+                                      vehNu,
+                                      deslu,
+                                      opNames,
+                                      addres,
+                                      housSize,
+                                      context);
                                 }
 
                                 // showLoaderDialog(
@@ -619,9 +677,3 @@ class _FSSMFormState extends State<FSSMForm> {
     );
   }
 }
-
-/*
-
-
-
- */
